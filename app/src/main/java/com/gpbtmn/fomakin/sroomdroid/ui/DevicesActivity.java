@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -38,11 +40,16 @@ public class DevicesActivity extends AppCompatActivity {
             }
         });
 
+        RecyclerView rvDevices = findViewById(R.id.rvDevices);
+        final RvDevicesAdapter adapter = new RvDevicesAdapter(this);
+        rvDevices.setAdapter(adapter);
+        rvDevices.setLayoutManager(new LinearLayoutManager(this));
+
         viewModel = ViewModelProviders.of(this).get(DevicesViewModel.class);
         viewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
             @Override
             public void onChanged(@Nullable List<Device> devices) {
-                System.out.println("Count devices: " + devices.size());
+                adapter.setDevices(devices);
             }
         });
     }
