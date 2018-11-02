@@ -1,6 +1,9 @@
-package com.gpbtmn.fomakin.sroomdroid;
+package com.gpbtmn.fomakin.sroomdroid.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +12,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.gpbtmn.fomakin.sroomdroid.R;
+import com.gpbtmn.fomakin.sroomdroid.domain.entity.Device;
+import com.gpbtmn.fomakin.sroomdroid.ui.viewModel.DevicesViewModel;
+
+import java.util.List;
+
 public class DevicesActivity extends AppCompatActivity {
+
+    private DevicesViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +35,14 @@ public class DevicesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        viewModel = ViewModelProviders.of(this).get(DevicesViewModel.class);
+        viewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
+            @Override
+            public void onChanged(@Nullable List<Device> devices) {
+                System.out.println("Count devices: " + devices.size());
             }
         });
     }
